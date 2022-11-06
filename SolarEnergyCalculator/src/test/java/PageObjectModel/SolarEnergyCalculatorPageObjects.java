@@ -1,0 +1,140 @@
+package PageObjectModel;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+
+import java.util.List;
+
+public class SolarEnergyCalculatorPageObjects {
+
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_strPostcode_Start")
+    WebElement _postCodeField;
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_btnNext_Start")
+    WebElement _nextButtonOnPostCodeValidationPage;
+    @FindBy(how = How.XPATH, using = "//div[@name='pgStartSolarfield1']")
+    WebElement _postCodeValidation;
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_divError_Start")
+    WebElement _errorCorrectiveMessage;
+    @FindBy(how = How.ID, using = "RadSliderDecrease_ctl00_ctl00_cphMainContent_cphPageWithSidebar_intRoofPitch")
+    WebElement _roofSlopeDecrease;
+    @FindBy(how = How.ID, using = "RadSliderIncrease_ctl00_ctl00_cphMainContent_cphPageWithSidebar_intRoofPitch")
+    WebElement _roofSlopeIncrease;
+    @FindBy(how = How.ID, using = "RadSliderDecrease_ctl00_ctl00_cphMainContent_cphPageWithSidebar_intOvershading")
+    WebElement _shadeDecrease;
+    @FindBy(how = How.ID, using = "RadSliderIncrease_ctl00_ctl00_cphMainContent_cphPageWithSidebar_intOvershading")
+    WebElement _shadeIncrease;
+    @FindBy(how =How.ID, using = "cphMainContent_cphPageWithSidebar_intGenerationID")
+    WebElement _installationSizeDropDownOptions;
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_btnNext_Quote")
+    WebElement _nextButtonOnSolarCalculator;
+    @FindBy(how= How.ID, using ="cphMainContent_cphPageWithSidebar_strResults_TotalAnnualBenefit")
+    WebElement _totalAnnualBenefit;
+
+
+    public WebDriver webDriver;
+
+    public SolarEnergyCalculatorPageObjects(WebDriver _webDriver) {
+        webDriver = _webDriver;
+        PageFactory.initElements(_webDriver, this);
+
+    }
+
+    public SolarEnergyCalculatorPageObjects enterPostcode(String code) {
+        _postCodeField.clear();
+        _postCodeField.sendKeys(code);
+        System.out.println("Postcode entered on the field");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects postcodeValidation(String expected) {
+        String actual = _postCodeValidation.getAttribute("class");
+        Assert.assertEquals(actual, expected);
+        System.out.println("Postcode field validator is working fine actual and expected are matched");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects enterIntoSolarCalculator() {
+        _nextButtonOnPostCodeValidationPage.click();
+        System.out.println("Landed on the solar energy calculator");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects tryingToEnterIntoSolarCalculator() {
+        _nextButtonOnPostCodeValidationPage.click();
+        Assert.assertTrue(_errorCorrectiveMessage.isDisplayed());
+        System.out.println("Please correct postcode message shown");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects selectingRoofSlope(int slope) {
+        int defaultSlopeValue = 30;
+        if (slope > defaultSlopeValue) {
+            do {
+                _roofSlopeIncrease.click();
+                defaultSlopeValue += 5;
+            }
+            while (slope > defaultSlopeValue);
+        }
+        if (slope < defaultSlopeValue) {
+            do {
+                _roofSlopeDecrease.click();
+                defaultSlopeValue -= 5;
+            }
+            while (slope < defaultSlopeValue);
+        }
+        System.out.println("Selected the roof slope value");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects selectingShadingValue(int shade) {
+        int defaultMinValue = 20;
+        int defaultMaxValue = 60;
+        if (shade < defaultMinValue) {
+            do {
+                _shadeDecrease.click();
+                defaultMinValue -= 20;
+            }
+            while (shade < defaultMinValue);
+        }
+        if (shade > defaultMaxValue) {
+            do {
+                _shadeIncrease.click();
+                defaultMinValue += 20;
+            }
+            while (shade > defaultMinValue);
+        }
+        System.out.println("Selected the shade value");
+        return this;
+    }
+    public SolarEnergyCalculatorPageObjects selectingInstallationSize(String size){
+       Select select = new Select(_installationSizeDropDownOptions);
+       select.selectByVisibleText(size);
+        System.out.println("Selected the installation value");
+        return this;
+    }
+
+    public SolarEnergyCalculatorPageObjects gettingResultPage() {
+        _nextButtonOnSolarCalculator.click();
+        Assert.assertTrue(webDriver.getPageSource().contains("Your results"));
+        System.out.println("Result page is showing");
+        return this;
+    }
+    public SolarEnergyCalculatorPageObjects checkingAnnualBenefit(String string){
+        List<WebElement> listOfResults = webDriver.findElements(By.xpath("//div[@class='formField TextAlignCenter']/label"));
+        WebElement selectResult = listOfResults.stream()
+                .filter(Item -> Item.getText().contains(string))
+                .findFirst()
+                .orElse(null);
+        System.out.println(selectResult.getText()+" is displayed");
+        System.out.println("Total Annual Benefit is: "+_totalAnnualBenefit.getText());
+        return this;
+    }
+
+
+}
