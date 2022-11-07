@@ -1,11 +1,10 @@
 Feature: Solar Energy Calculator for UK resident
 
-  Scenario Outline: Non Uk resident trying to calculate
+  Scenario Outline: Non Uk(<<country>) resident trying to access the solar calculator
     Given Launching solar energy calculator site "https://www.pvfitcalculator.energysavingtrust.org.uk/"
     When Entering postcode "<postcode>"
     Then Verifying postcode is valid "<expected error message>"
     And Trying to enter the calculator page by clicking next button error popup shown
-    And Closing browser window
     Examples:
       | country | postcode   | expected error message                    |
       | Ireland | D15X435    | formField jsPostcode isRequired isInvalid |
@@ -13,7 +12,7 @@ Feature: Solar Energy Calculator for UK resident
       | Germany | 10115      | formField jsPostcode isRequired isInvalid |
 
 
-  Scenario Outline: Uk resident calculating potential annual benefit that they can get by installing solar system
+  Scenario Outline: Uk region <country> resident calculating potential annual benefit that they can get by installing solar system
     Given Launching solar energy calculator site "https://www.pvfitcalculator.energysavingtrust.org.uk/"
     When Entering postcode "<postcode>"
     Then Verifying postcode is valid "formField jsPostcode isRequired isValid"
@@ -22,10 +21,9 @@ Feature: Solar Energy Calculator for UK resident
     And Selecting shading <shading value> percentage
     And Selecting installation size "<installation size>"
     And Reaching result page by clicking the next button
-    Then Checking for "Potential annual benefit"
-    And Closing browser window
+    Then Checking for "Potential annual benefit" page and taking screenshot
     Examples:
       | country          | postcode | roof slope | shading value | installation size |
-      | UK               | GU16 7HF | 25         | 20            | 4 kWp             |
+      | London           | N1 0JB   | 25         | 20            | 4 kWp             |
       | Scotland         | EH12 7TB | 20         | 20            | 2 kWp             |
       | Northern Ireland | BT10 0QX | 25         | 20            | 4 kWp             |

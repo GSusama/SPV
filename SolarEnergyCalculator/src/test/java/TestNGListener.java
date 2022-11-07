@@ -7,30 +7,21 @@ public class TestNGListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult iTestResult) {
-        System.out.println("<<<<<<<<<<<<<< TestMethod started: "+ iTestResult.getName()+" >>>>>>>>>>>>>>>>>>>");
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<< TestMethod started >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("<<<<<<<<<<<<<< TestMethod passed: "+ iTestResult.getName()+" >>>>>>>>>>>>>>>>>>>");
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<< TestMethod passed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        System.out.println("<<<<<<<<<<<<<< TestMethod failed: "+ iTestResult.getName()+" >>>>>>>>>>>>>>>>>>>");
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<< TestMethod failed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        System.out.println("<<<<<<<<<<<<<< TestMethod Skipped: "+iTestResult.getName()+" >>>>>>>>>>>>>>>>>>>");
-    }
-
-    @Override
-    public void onStart(ITestContext iTestContext) {
-        System.out.println("<<<<<<<<<<<<<< TestSuite Skipped: "+ iTestContext.getName()+" >>>>>>>>>>>>>>>>>>>");
-    }
-    @Override
-    public void onFinish(ITestContext iTestContext) {
-        System.out.println("<<<<<<<<<<<<<< TestSuite Skipped: "+ iTestContext.getName()+" >>>>>>>>>>>>>>>>>>>");
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<< TestMethod Skipped >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 }

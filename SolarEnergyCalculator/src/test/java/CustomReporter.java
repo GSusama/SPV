@@ -19,10 +19,10 @@ public class CustomReporter implements IReporter {
             for (ISuiteResult sr : suiteResults.values()) {
                 ITestContext tc = sr.getTestContext();
                 System.out.println(
-                        "Passed tests for suite '" + suiteName + "' is:" + tc.getPassedTests().getAllResults().size());
+                        "Passed tests '" + suiteName + "' is:" + tc.getPassedTests().getAllResults().size());
                 System.out.println(
-                        "Failed tests for suite '" + suiteName + "' is:" + tc.getFailedTests().getAllResults().size());
-                System.out.println("Skipped tests for suite '" + suiteName + "' is:"
+                        "Failed tests '" + suiteName + "' is:" + tc.getFailedTests().getAllResults().size());
+                System.out.println("Skipped tests '" + suiteName + "' is:"
                         + tc.getSkippedTests().getAllResults().size());
             }
         }

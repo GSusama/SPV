@@ -3,7 +3,13 @@ package StepDefinitions;
 import PageObjectModel.SolarEnergyCalculatorPageObjects;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.*;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -35,6 +41,7 @@ public class SolarEnergyCalculator {
     public void postcode_validation(String string) {
         solarEnergyCalculatorPageObjects.postcodeValidation(string);
     }
+
     @And("Trying to enter the calculator page by clicking next button error popup shown")
     public void trying_enter_the_calculator_page_by_clicking_next_button() {
         solarEnergyCalculatorPageObjects.tryingToEnterIntoSolarCalculator();
@@ -48,19 +55,16 @@ public class SolarEnergyCalculator {
     @Then("Selecting roof slope {int} degree")
     public void selecting_roof_slope(int slope) {
         solarEnergyCalculatorPageObjects.selectingRoofSlope(slope);
-
     }
 
     @And("Selecting shading {int} percentage")
     public void selecting_shading_percentage(int shade) {
         solarEnergyCalculatorPageObjects.selectingShadingValue(shade);
-
     }
 
     @And("Selecting installation size {string}")
     public void selecting_installation_size(String string) {
         solarEnergyCalculatorPageObjects.selectingInstallationSize(string);
-
     }
 
     @And("Reaching result page by clicking the next button")
@@ -68,13 +72,19 @@ public class SolarEnergyCalculator {
         solarEnergyCalculatorPageObjects.gettingResultPage();
     }
 
-    @Then("Checking for {string}")
+    @Then("Checking for {string} page and taking screenshot")
     public void checking_Potential_annual_benefit(String string) {
         solarEnergyCalculatorPageObjects.checkingAnnualBenefit(string);
     }
 
-    @After
-    @And("Closing browser window")
+    @After(order = 1)
+    public void takeScreenshot(Scenario scenario) {
+        TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
+        byte[] screenshotByte = takesScreenshot.getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshotByte, "image/png", "Result page screenshot attached");
+    }
+
+    @After(order = 0)
     public void close() {
         driver.quit();
     }

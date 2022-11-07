@@ -29,11 +29,11 @@ public class SolarEnergyCalculatorPageObjects {
     WebElement _shadeDecrease;
     @FindBy(how = How.ID, using = "RadSliderIncrease_ctl00_ctl00_cphMainContent_cphPageWithSidebar_intOvershading")
     WebElement _shadeIncrease;
-    @FindBy(how =How.ID, using = "cphMainContent_cphPageWithSidebar_intGenerationID")
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_intGenerationID")
     WebElement _installationSizeDropDownOptions;
     @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_btnNext_Quote")
     WebElement _nextButtonOnSolarCalculator;
-    @FindBy(how= How.ID, using ="cphMainContent_cphPageWithSidebar_strResults_TotalAnnualBenefit")
+    @FindBy(how = How.ID, using = "cphMainContent_cphPageWithSidebar_strResults_TotalAnnualBenefit")
     WebElement _totalAnnualBenefit;
 
 
@@ -48,27 +48,23 @@ public class SolarEnergyCalculatorPageObjects {
     public SolarEnergyCalculatorPageObjects enterPostcode(String code) {
         _postCodeField.clear();
         _postCodeField.sendKeys(code);
-        System.out.println("Postcode entered on the field");
         return this;
     }
 
     public SolarEnergyCalculatorPageObjects postcodeValidation(String expected) {
         String actual = _postCodeValidation.getAttribute("class");
         Assert.assertEquals(actual, expected);
-        System.out.println("Postcode field validator is working fine actual and expected are matched");
         return this;
     }
 
     public SolarEnergyCalculatorPageObjects enterIntoSolarCalculator() {
         _nextButtonOnPostCodeValidationPage.click();
-        System.out.println("Landed on the solar energy calculator");
         return this;
     }
 
     public SolarEnergyCalculatorPageObjects tryingToEnterIntoSolarCalculator() {
         _nextButtonOnPostCodeValidationPage.click();
         Assert.assertTrue(_errorCorrectiveMessage.isDisplayed());
-        System.out.println("Please correct postcode message shown");
         return this;
     }
 
@@ -88,7 +84,6 @@ public class SolarEnergyCalculatorPageObjects {
             }
             while (slope < defaultSlopeValue);
         }
-        System.out.println("Selected the roof slope value");
         return this;
     }
 
@@ -109,30 +104,28 @@ public class SolarEnergyCalculatorPageObjects {
             }
             while (shade > defaultMinValue);
         }
-        System.out.println("Selected the shade value");
         return this;
     }
-    public SolarEnergyCalculatorPageObjects selectingInstallationSize(String size){
-       Select select = new Select(_installationSizeDropDownOptions);
-       select.selectByVisibleText(size);
-        System.out.println("Selected the installation value");
+
+    public SolarEnergyCalculatorPageObjects selectingInstallationSize(String size) {
+        Select select = new Select(_installationSizeDropDownOptions);
+        select.selectByVisibleText(size);
         return this;
     }
 
     public SolarEnergyCalculatorPageObjects gettingResultPage() {
         _nextButtonOnSolarCalculator.click();
         Assert.assertTrue(webDriver.getPageSource().contains("Your results"));
-        System.out.println("Result page is showing");
         return this;
     }
-    public SolarEnergyCalculatorPageObjects checkingAnnualBenefit(String string){
+
+    public SolarEnergyCalculatorPageObjects checkingAnnualBenefit(String string) {
         List<WebElement> listOfResults = webDriver.findElements(By.xpath("//div[@class='formField TextAlignCenter']/label"));
         WebElement selectResult = listOfResults.stream()
                 .filter(Item -> Item.getText().contains(string))
                 .findFirst()
                 .orElse(null);
-        System.out.println(selectResult.getText()+" is displayed");
-        System.out.println("Total Annual Benefit is: "+_totalAnnualBenefit.getText());
+        System.out.println("Total Annual Benefit is: " + _totalAnnualBenefit.getText());
         return this;
     }
 
